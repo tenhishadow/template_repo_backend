@@ -1,0 +1,5 @@
+CODEOWNERS @cto
+docker/* @devops_team
+docker-compose* @devops_team
+.circleci/* @devops_team
+.github/* @devops_team
