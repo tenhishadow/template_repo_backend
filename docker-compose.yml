@@ -1,0 +1,41 @@
+--- # docker-compose for local development/testing
+
+version: '2'
+
+services:
+  web:
+    container_name: web
+    tty: true
+    stdin_open: true
+    restart: always
+    build: './'
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - ./docker/vars/local_compose.env
+  db:
+    container_name: db
+    tty: true
+    stdin_open: true
+    restart: always
+    image: 'postgres:11'
+    expose:
+      - '5432'
+    env_file:
+      - ./docker/vars/local_compose.env
+
+  redis:
+    container_name: redis
+    tty: true
+    stdin_open: true
+    restart: always
+    image: redis:alpine
+    expose:
+      - '6379'
+    env_file:
+      - ./docker/vars/local_compose.env
+
+...

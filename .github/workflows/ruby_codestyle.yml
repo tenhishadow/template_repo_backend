@@ -1,0 +1,35 @@
+---
+
+name: CodeCheck | RUBY
+on: [ 'pull_request']
+
+jobs:
+  styleguide:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [ '2.6.x' ]
+    name: styleguide
+    steps:
+      - name: repo checkout
+        uses: actions/checkout@v1
+
+      - name: setup ruby ${{ matrix.ruby }}
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: "${{ matrix.ruby }}"
+          architecture: 'x64'
+
+      - name: install deps
+        run: >-
+          gem install
+          rubocop glossgenius_style
+
+      - name: do check
+        run: >-
+          git diff
+          --diff-filter=AM
+          --name-status origin/integration | xargs
+          rubocop --force-exclusion
+
+...
